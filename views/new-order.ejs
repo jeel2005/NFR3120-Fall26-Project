@@ -1,0 +1,48 @@
+<%# SOURCE: The form and input tags use basic HTML from Chapter 9. forEach() is from Chapter 10. The data-price value is used in public/Script/app.js with dataset from Chapter 9. %>
+<%- include('partials/header') %>
+
+<h1>New Order</h1>
+
+<div id="formErrors">
+  <% errors.forEach(e => { %>
+    <p class="error"><%= e %></p>
+  <% }); %>
+</div>
+
+<form id="orderForm" method="post" action="/orders" novalidate>
+  <p>
+    <label for="customer">Your name:</label>
+    <input type="text" id="customer" name="customer" value="<%= form.customer %>">
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Category</th><th>Price</th><th>Quantity</th></tr>
+    </thead>
+    <tbody>
+      <% menu.forEach(m => { %>
+        <tr>
+          <td><%= m.name %> - <%= m.description %></td>
+          <td><%= m.category %></td>
+          <td>$<%= m.price.toFixed(2) %></td>
+          <td>
+            <input type="number" class="qty" name="qty_<%= m.id %>"
+                   min="0" max="20" value="<%= form.qty[m.id] || 0 %>" data-price="<%= m.price %>">
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <p>
+    <label for="notes">Customize your order (e.g. oat milk, no sugar):</label><br>
+    <textarea id="notes" name="notes" rows="3" cols="50"><%= form.notes %></textarea>
+  </p>
+
+  <p><strong>Total: $<span id="total">0.00</span></strong></p>
+
+  <button type="submit">Submit Order</button>
+  <a href="/">Cancel</a>
+</form>
+
+<%- include('partials/footer') %>
