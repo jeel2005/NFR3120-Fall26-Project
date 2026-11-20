@@ -1,0 +1,74 @@
+<%# SOURCE: The EJS output tags come from the WebProject template (views/index.ejs). forEach() is from Chapter 10, and arrow functions are from Demo/fat-arrow.js. %>
+<%- include('partials/header') %>
+
+<h1>Welcome to <%= site.name %></h1>
+<p>Fresh coffee, food and good company. Browse our menu and order online.</p>
+
+<%# Hero button: opens the New Order form %>
+<form action="/orders/new" method="get">
+  <button type="submit">Place a New Order</button>
+</form>
+
+<% if (placed) { %>
+  <p class="success">Order #<%= placed %> was placed successfully!</p>
+<% } %>
+
+<h2 id="menu">Menu</h2>
+<table>
+  <thead>
+    <tr><th>Item</th><th>Category</th><th>Description</th><th>Price</th></tr>
+  </thead>
+  <tbody>
+    <% menu.forEach(m => { %>
+      <tr>
+        <td><%= m.name %></td>
+        <td><%= m.category %></td>
+        <td><%= m.description %></td>
+        <td>$<%= m.price.toFixed(2) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+<h2 id="orders">Active Orders</h2>
+<% if (orders.length == 0) { %>
+  <p>No active orders right now. Click "Place a New Order" to create one.</p>
+<% } else { %>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Customer</th><th>Items</th><th>Notes</th>
+        <th>Total</th><th>Placed</th><th>Status</th><th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(o => { %>
+        <tr>
+          <td><%= o.id %></td>
+          <td><%= o.customer %></td>
+          <td>
+            <% o.items.forEach(i => { %>
+              <%= i.qty %> x <%= i.name %><br>
+            <% }); %>
+          </td>
+          <td><%= o.notes || '-' %></td>
+          <td>$<%= o.total.toFixed(2) %></td>
+          <td><%= o.placed.toLocaleString('en-CA') %></td>
+          <td><%= o.status %></td>
+          <td>
+            <form method="post" action="/orders/<%= o.id %>/status">
+              <input type="hidden" name="status" value="<%= nextStatus(o.status) %>">
+              <button type="submit">Mark <%= nextStatus(o.status) %></button>
+            </form>
+            <form method="post" action="/orders/<%= o.id %>/status">
+              <input type="hidden" name="status" value="Cancelled">
+              <button type="submit">Cancel</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('partials/footer') %>

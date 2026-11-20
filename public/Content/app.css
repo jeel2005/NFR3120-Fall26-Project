@@ -1,0 +1,5 @@
+/* Plain styles for Part 1 - only what is needed to read the tables and messages */
+table, th, td { border: 1px solid black; border-collapse: collapse; padding: 4px; }
+td form { display: inline; }
+.error { color: red; }
+.success { color: green; }

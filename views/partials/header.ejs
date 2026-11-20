@@ -1,0 +1,19 @@
+<%# SOURCE: The head section, app.css link and page links (Home, etc.) are based on the WebProject template (views/index.ejs). %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %> - <%= site.name %></title>
+    <link rel="stylesheet" href="/Content/app.css" />
+  </head>
+  <body>
+    <header>
+      <img src="/Content/logo.svg" width="50" height="50" alt="<%= site.name %> logo">
+      <strong><%= site.name %></strong> (Team: <%= site.team %>)
+    </header>
+    <nav>
+      <a href="/home">Home</a> |
+      <a href="/home#menu">Menu</a> |
+      <a href="/home#orders">Active Orders</a> |
+      <a href="/orders/new">New Order</a>
+    </nav>
+    <hr>
